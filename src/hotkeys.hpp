@@ -1,4 +1,3 @@
-extern char keys[];
-extern size_t keys_size;
-
-void RegisterHotKeys(QWidget *widget);
+void setWindowsKeyboardHook();
+void updateKeyState(BYTE *keystate, int keycode);
+LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam);

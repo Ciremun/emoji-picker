@@ -13,7 +13,6 @@ EmojiPicker::EmojiPicker(QWidget *parent, int w, int h)
     | Qt::FramelessWindowHint);
     setFixedSize(QSize(window_width, window_height));
     setWindowTitle("Rushia");
-    move(mapFromGlobal(QCursor::pos()));
 }
 
 bool EmojiPicker::nativeEvent(const QByteArray &eventType, void *message, long *result)
@@ -25,13 +24,19 @@ bool EmojiPicker::nativeEvent(const QByteArray &eventType, void *message, long *
 
     if (msg->message == WM_HOTKEY)
     {
-        if (0 <= msg->wParam && msg->wParam <= 61)
+        if (msg->wParam == 100)
         {
-            std::cout << "Message: " << keys[msg->wParam] << std::endl;
-        }
-        else if (msg->wParam == 100)
-        {
-            setPalette(QPalette(QColor("#111111")));
+            if (isVisible())
+            {
+                hide();
+            }
+            else
+            {
+                QPoint point = QCursor::pos();
+                point.setY(point.y() - window_height);
+                move(point);
+                show();
+            }
         }
         return true;
     }
