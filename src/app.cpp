@@ -3,7 +3,7 @@
 #include <QtWidgets>
 
 #include "app.hpp"
-#include "hotkeys.hpp"
+#include "input.hpp"
 
 EmojiPicker::EmojiPicker(QWidget *parent, int w, int h)
     : QWidget(parent), window_width(w), window_height(h)

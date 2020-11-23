@@ -2,7 +2,7 @@
 #include <QtWidgets>
 
 #include "app.hpp"
-#include "hotkeys.hpp"
+#include "input.hpp"
 
 int main(int argc, char *argv[])
 {

@@ -2,7 +2,7 @@
 
 #include <QtWidgets>
 
-#include "hotkeys.hpp"
+#include "input.hpp"
 
 HHOOK hHook;
 

@@ -15,6 +15,6 @@ endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
-add_executable(emoji_picker src/main.cpp src/app.cpp src/app.hpp src/hotkeys.cpp src/hotkeys.hpp)
+add_executable(emoji_picker src/main.cpp src/app.cpp src/app.hpp src/input.cpp src/input.hpp)
 
 target_link_libraries(emoji_picker Qt5::Widgets)
