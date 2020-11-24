@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
     freopen("conout$","w",stdout);
     QApplication Application(argc, argv);
 
-    QMainWindow window;
-    EmojiPicker widget(&window, 340, 310);
+    QFrame window;
+    EmojiPicker widget(&window, 330, 360);
 
     RegisterHotKey((HWND)widget.winId(), 100, MOD_CONTROL | MOD_NOREPEAT, 'E');
     setWindowsKeyboardHook();
