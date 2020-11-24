@@ -89,6 +89,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
         QPushButton *button = new QPushButton(QString::fromWCharArray(l));
         button->setFixedSize(38, 38);
         button->setFont(QFont("Consolas", 14));
+        connect(button, &QPushButton::released, this, &EmojiPicker::handleButton);
         flowLayout->addWidget(button);
     }
 
@@ -129,10 +130,13 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
 	setLayout(main_layout);
 
     setWindowFlags(Qt::Window
+    | Qt::X11BypassWindowManagerHint
     | Qt::WindowStaysOnTopHint
-    | Qt::FramelessWindowHint);
+    | Qt::FramelessWindowHint
+    | Qt::WindowDoesNotAcceptFocus);
     setFixedSize(QSize(window_width, window_height));
     setWindowTitle("Rushia");
+    setAttribute(Qt::WA_ShowWithoutActivating);
 }
 
 bool EmojiPicker::nativeEvent(const QByteArray &eventType, void *message, long *result)
@@ -172,4 +176,9 @@ void EmojiPicker::mousePressEvent(QMouseEvent *event)
 void EmojiPicker::mouseMoveEvent(QMouseEvent *event)
 {
     move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
+}
+
+void EmojiPicker::handleButton()
+{
+    return;
 }

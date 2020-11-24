@@ -13,8 +13,11 @@ int main(int argc, char *argv[])
     QFrame window;
     EmojiPicker widget(&window, 330, 360);
 
-    RegisterHotKey((HWND)widget.winId(), 100, MOD_CONTROL | MOD_NOREPEAT, 'E');
+    HWND hwnd = (HWND)widget.winId();
+    RegisterHotKey(hwnd, 100, MOD_CONTROL | MOD_NOREPEAT, 'E');
     setWindowsKeyboardHook();
 
+    SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE)
+        | WS_EX_NOACTIVATE | WS_EX_APPWINDOW);
     return Application.exec();
 }
