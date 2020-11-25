@@ -51,3 +51,29 @@ void setWindowsKeyboardHook()
 {
     hHook = SetWindowsHookEx(WH_KEYBOARD_LL, windowsHookCallback, NULL, 0);
 }
+
+void windowsSendInput(const wchar_t *msg, int size)
+{
+    INPUT inputs[size*2];
+    INPUT input;
+    input.type = INPUT_KEYBOARD;
+    input.ki.wVk = 0;
+    input.ki.wScan = 0;
+    input.ki.time = 0;
+    input.ki.dwExtraInfo = 0;
+    input.ki.dwFlags = KEYEVENTF_UNICODE;
+
+    for (int i = 0; i < size; i++)
+    {
+        input.ki.wScan = msg[i];
+        inputs[i] = input;
+    }
+    for (int i = 0; i < size; i++)
+    {
+        input.ki.dwFlags = KEYEVENTF_KEYUP;
+        input.ki.wScan = msg[i];
+        inputs[i+size] = input;
+    }
+
+    SendInput(size, inputs, sizeof(INPUT));
+}

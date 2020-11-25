@@ -89,7 +89,14 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
         QPushButton *button = new QPushButton(QString::fromWCharArray(l));
         button->setFixedSize(38, 38);
         button->setFont(QFont("Consolas", 14));
-        connect(button, &QPushButton::released, this, &EmojiPicker::handleButton);
+        connect(button, &QPushButton::released, this, [this, button]
+        {
+            QString button_text = button->text();
+            int button_text_length = button_text.length();
+            wchar_t buffer[button_text_length];
+            button_text.toWCharArray(buffer);
+            this->handleButton(buffer, button_text_length);
+        });
         flowLayout->addWidget(button);
     }
 
@@ -178,7 +185,7 @@ void EmojiPicker::mouseMoveEvent(QMouseEvent *event)
     move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
 
-void EmojiPicker::handleButton()
+void EmojiPicker::handleButton(const wchar_t* msg, int size)
 {
-    return;
+    windowsSendInput(msg, size);
 }

@@ -3,7 +3,7 @@ class EmojiPicker : public QFrame
 public:
     EmojiPicker(QFrame *parent, int w, int h);
 private slots:
-    void handleButton();
+    void handleButton(const wchar_t* msg, int size);
 private:
     int window_width;
     int window_height;
