@@ -9,9 +9,10 @@
 EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     : QFrame(parent), window_width(w), window_height(h)
 {
+    setObjectName("MainFrame");
     setFrameShape(QFrame::Box);
     setStyleSheet(" "
-    "QFrame {"
+    "#MainFrame {"
     "   border-color: #323338;"
     "   border-width: 1.2px;"
     "   border-style: inset;"
@@ -19,7 +20,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     "}"
     "QPushButton {border: none;}"
     "QPushButton:hover {background-color: #474747;}"
-    "* {background-color: #333333;}");
+    "* {background: #333333; border:none;}");
 
     QIcon closeIcon = style()->standardIcon(QStyle::SP_TitleBarCloseButton);
     QPushButton *close_button = new QPushButton();
@@ -30,65 +31,84 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     close_button->setIcon(closeIcon);
     connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
 
-    QHBoxLayout *title_bar = new QHBoxLayout();
-    title_bar->setObjectName("title_bar");
-    title_bar->addWidget(close_button, 0, Qt::AlignRight);
-
     QVBoxLayout *main_layout = new QVBoxLayout();
     main_layout->setMargin(0);
     main_layout->setSpacing(0);
-    main_layout->addLayout(title_bar);
+    main_layout->addWidget(close_button, 0, Qt::AlignRight);
 
     FlowLayout *flowLayout = new FlowLayout(0, 0, 0);
     flowLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     flowLayout->setContentsMargins(8, 0, 0, 0);
 
     QLabel *label = new QLabel();
-    label->setText("Search");
-    label->setContentsMargins(8, 15, 0, 15);
-    label->setStyleSheet("QLabel{color:white;}");
+    label->setFont(QFont("Arial", 11));
+    label->setText("Emoji - Keep typing to find an emoji");
+    label->setContentsMargins(15, 0, 0, 10);
+    label->setStyleSheet("QLabel{color: #969696; background-color: #111111;}");
     main_layout->addWidget(label);
 
-    const wchar_t* test[] = {
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620",
-        L"\U00002620", L"\U000000D2", L"w", L"\U000000D3", L"\U0001F602", L"\U0001F914", L"\U0001F921", L"\U00002620"
-    };
+    QHBoxLayout* tabs = new QHBoxLayout();
+    tabs->setSpacing(0);
+    tabs->setContentsMargins(8, 0, 0, 0);
 
-    for(const wchar_t* l : test)
+    const wchar_t* tab_labels[] = {L":)", L";-)"};
+    for (const wchar_t* l: tab_labels)
+    {
+        QPushButton* tab_button = new QPushButton(QString::fromWCharArray(l));
+        tab_button->setContentsMargins(0, 0, 0, 0);
+        tab_button->setFixedSize(40, 40);
+        tab_button->setFont(QFont("Arial", 13));
+        tab_button->setStyleSheet(" "
+        "QPushButton {color: #ffffff; background-color: #111111;}"
+        "QPushButton:hover {color: #026fc5; background-color: #282828;}");
+        tabs->addWidget(tab_button);
+    }
+
+    tabs->addStretch();
+    main_layout->addLayout(tabs);
+
+    const wchar_t* emojis[] = {
+        L"😀", L"😁", L"😂", L"🤣", L"😃", L"😄", L"😅", L"😆",
+        L"😉", L"😊", L"😋", L"😎", L"😍", L"😘", L"🥰", L"😗",
+        L"😙 ", L"😚", L"☺", L"🙂", L"🤗", L"🤩", L"🤔", L"🤨",
+        L"😐", L"😑", L"😶", L"🙄", L"😏", L"😣", L"😥", L"😮",
+        L"🤐", L"😯", L"😪", L"😫", L"🥱", L"😴", L"😌", L"😛",
+        L"😜", L"😝", L"🤤", L"😒", L"😓", L"😔", L"😕", L"🙃",
+        L"🤑", L"😲", L"☹", L"🙁", L"😖", L"😞", L"😟", L"😤",
+        L"😢", L"😭", L"😦", L"😧", L"😨", L"😩", L"🤯", L"😬",
+        L"😰", L"😱", L"🥵", L"🥶", L"😳", L"🤪", L"😵", L"🥴",
+        L"😠", L"😡", L"🤬", L"😷", L"🤒", L"🤕", L"🤢", L"🤮",
+        L"🤧", L"😇", L"🥳", L"🥺", L"🤠", L"🤡", L"🤥", L"🤫",
+        L"🤭", L"🧐", L"🤓", L"😈", L"👿", L"👹", L"👺", L"💀",
+        L"☠", L"👻", L"👽", L"👾", L"🤖", L"💩", L"😺", L"😸",
+        L"😹", L"😻", L"😼", L"😽", L"🙀", L"😿", L"🐱", L"👤",
+        L"🐱", L"🏍", L"🐱", L"💻", L"🐱", L"🐉", L"🐱", L"🐱",
+        L"🚀", L"🙈", L"🙉", L"🙊", L"🐵", L"🐶", L"🐺", L"🐱",
+        L"🦁", L"🐯", L"🦒", L"🦊", L"🦝", L"🐷", L"🐗", L"🐭",
+        L"🐹", L"🐰", L"🐻", L"🐨", L"🐼", L"🐸", L"🦓", L"🐴",
+        L"🦄", L"🐔", L"🐲", L"🐽", L"🐾", L"🐒", L"🦍", L"🦧",
+        L"🐕", L"🦺", L"🐩", L"🐕", L"🐈", L"🐅", L"🐆", L"🐎",
+        L"🦌", L"🦏", L"🦛", L"🐂", L"🐃", L"🐄", L"🐏", L"🐑",
+        L"🐐", L"🐪", L"🐫", L"🦙", L"🦘", L"🦥", L"🦨", L"🦡",
+        L"🐘", L"🐁", L"🐀", L"🦔", L"🐇", L"🐿", L"🦎", L"🐊"
+        "🐢", L"🐉", L"🦕", L"🦖", L"🦦", L"🦈", L"🐬", L"🐳",
+        L"🐋", L"🐟", L"🐠", L"🐡", L"🦐", L"🦑", L"🐙", L"🦞",
+        L"🦀", L"🐚", L"🦆", L"🐓", L"🦃", L"🦅", L"🕊",L"🦢",
+        L"🦜", L"🦩", L"🦚", L"🦉", L"🐦", L"🐧", L"🐥",L"🐤",
+        L"🐣", L"🦇", L"🦋", L"🐛", L"🦟", L"🦗", L"🐜",L"🐝",
+        L"🐞", L"🦂", L"🕷", L"🕸", L"🦠", L"🧞", L"♀",L"♂",
+        L"🗣", L"👤", L"👥", L"👁", L"👀", L"🦴", L"🦷",L"👅",
+        L"👄", L"🧠", L"🦾", L"🦿", L"👣", L"🤺", L"⛷",L"🤼",
+        L"♂", L"🤼", L"♀", L"️", L"👯", L"♂", L"👯", L"♀",L"💑",
+        L"👩" L"❤" L"👩", L"👨", L"❤", L"👨", L"💏",L"👩",
+        L"❤" L"💋", L"👩", L"👨", L"❤",L"💋", L"👨", L"👪",
+        L"👨", L"👩", L"👦"
+    };
+    for(const wchar_t* l : emojis)
     {
         QPushButton *button = new QPushButton(QString::fromWCharArray(l));
         button->setFixedSize(38, 38);
-        button->setFont(QFont("Consolas", 14));
+        button->setFont(QFont("Arial", 14));
         connect(button, &QPushButton::released, this, [this, button]
         {
             QString button_text = button->text();
