@@ -17,6 +17,8 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 add_executable(emoji_picker src/main.cpp src/app.cpp src/app.hpp 
 src/input.cpp src/input.hpp
-src/FlowLayout.cpp src/FlowLayout.hpp)
+src/flowlayout.cpp src/flowlayout.hpp
+src/tab.cpp src/tab.hpp
+src/emojis.hpp)
 
 target_link_libraries(emoji_picker Qt5::Widgets)

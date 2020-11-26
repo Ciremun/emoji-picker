@@ -1,7 +1,6 @@
 #include <iostream>
 
-#include <QtWidgets>
-#include "winuser.h"
+#include <qt_windows.h>
 
 #include "input.hpp"
 

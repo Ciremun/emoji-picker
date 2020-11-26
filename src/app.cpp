@@ -3,8 +3,8 @@
 #include <QtWidgets>
 
 #include "app.hpp"
-#include "input.hpp"
-#include "FlowLayout.hpp"
+#include "emojis.hpp"
+#include "tab.hpp"
 
 EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     : QFrame(parent), window_width(w), window_height(h)
@@ -36,10 +36,6 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     main_layout->setSpacing(0);
     main_layout->addWidget(close_button, 0, Qt::AlignRight);
 
-    FlowLayout *flowLayout = new FlowLayout(0, 0, 0);
-    flowLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-    flowLayout->setContentsMargins(8, 0, 0, 0);
-
     QLabel *label = new QLabel();
     label->setFont(QFont("Arial", 11));
     label->setText("Emoji - Keep typing to find an emoji");
@@ -47,113 +43,36 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     label->setStyleSheet("QLabel{color: #969696; background-color: #111111;}");
     main_layout->addWidget(label);
 
-    QHBoxLayout* tabs = new QHBoxLayout();
+    QHBoxLayout *tabs = new QHBoxLayout();
     tabs->setSpacing(0);
     tabs->setContentsMargins(8, 0, 0, 0);
 
-    const wchar_t* tab_labels[] = {L":)", L";-)"};
-    for (const wchar_t* l: tab_labels)
-    {
-        QPushButton* tab_button = new QPushButton(QString::fromWCharArray(l));
-        tab_button->setContentsMargins(0, 0, 0, 0);
-        tab_button->setFixedSize(40, 40);
-        tab_button->setFont(QFont("Arial", 13));
-        tab_button->setStyleSheet(" "
-        "QPushButton {color: #ffffff; background-color: #111111;}"
-        "QPushButton:hover {color: #026fc5; background-color: #282828;}");
-        tabs->addWidget(tab_button);
-    }
+    QString tab_button_style = " "
+    "QPushButton {color: #ffffff; background-color: #111111;}"
+    "QPushButton:hover {color: #026fc5; background-color: #282828;}";
+
+    QPushButton *tab_button_1 = new QPushButton(":)");
+    tab_button_1->setFixedSize(40, 40);
+    tab_button_1->setFont(QFont("Arial", 13));
+    tab_button_1->setStyleSheet(tab_button_style);
+    Tab *tab_1 = new Tab(tab_button_1, label, "Emoji - Keep typing to find an emoji", emojis, 38, 38, 14);
+    tabs->addWidget(tab_button_1);
+
+    QPushButton *tab_button_2 = new QPushButton(";-)");
+    tab_button_2->setFixedSize(40, 40);
+    tab_button_2->setFont(QFont("Arial", 13));
+    tab_button_2->setStyleSheet(tab_button_style);
+    Tab *tab_2 = new Tab(tab_button_2, label, "Kaomoji", kaomoji, 100, 40, 11, false);
+    tabs->addWidget(tab_button_2);
 
     tabs->addStretch();
     main_layout->addLayout(tabs);
 
-    const wchar_t* emojis[] = {
-        L"😀", L"😁", L"😂", L"🤣", L"😃", L"😄", L"😅", L"😆",
-        L"😉", L"😊", L"😋", L"😎", L"😍", L"😘", L"🥰", L"😗",
-        L"😙 ", L"😚", L"☺", L"🙂", L"🤗", L"🤩", L"🤔", L"🤨",
-        L"😐", L"😑", L"😶", L"🙄", L"😏", L"😣", L"😥", L"😮",
-        L"🤐", L"😯", L"😪", L"😫", L"🥱", L"😴", L"😌", L"😛",
-        L"😜", L"😝", L"🤤", L"😒", L"😓", L"😔", L"😕", L"🙃",
-        L"🤑", L"😲", L"☹", L"🙁", L"😖", L"😞", L"😟", L"😤",
-        L"😢", L"😭", L"😦", L"😧", L"😨", L"😩", L"🤯", L"😬",
-        L"😰", L"😱", L"🥵", L"🥶", L"😳", L"🤪", L"😵", L"🥴",
-        L"😠", L"😡", L"🤬", L"😷", L"🤒", L"🤕", L"🤢", L"🤮",
-        L"🤧", L"😇", L"🥳", L"🥺", L"🤠", L"🤡", L"🤥", L"🤫",
-        L"🤭", L"🧐", L"🤓", L"😈", L"👿", L"👹", L"👺", L"💀",
-        L"☠", L"👻", L"👽", L"👾", L"🤖", L"💩", L"😺", L"😸",
-        L"😹", L"😻", L"😼", L"😽", L"🙀", L"😿", L"🐱", L"👤",
-        L"🐱", L"🏍", L"🐱", L"💻", L"🐱", L"🐉", L"🐱", L"🐱",
-        L"🚀", L"🙈", L"🙉", L"🙊", L"🐵", L"🐶", L"🐺", L"🐱",
-        L"🦁", L"🐯", L"🦒", L"🦊", L"🦝", L"🐷", L"🐗", L"🐭",
-        L"🐹", L"🐰", L"🐻", L"🐨", L"🐼", L"🐸", L"🦓", L"🐴",
-        L"🦄", L"🐔", L"🐲", L"🐽", L"🐾", L"🐒", L"🦍", L"🦧",
-        L"🐕", L"🦺", L"🐩", L"🐕", L"🐈", L"🐅", L"🐆", L"🐎",
-        L"🦌", L"🦏", L"🦛", L"🐂", L"🐃", L"🐄", L"🐏", L"🐑",
-        L"🐐", L"🐪", L"🐫", L"🦙", L"🦘", L"🦥", L"🦨", L"🦡",
-        L"🐘", L"🐁", L"🐀", L"🦔", L"🐇", L"🐿", L"🦎", L"🐊"
-        "🐢", L"🐉", L"🦕", L"🦖", L"🦦", L"🦈", L"🐬", L"🐳",
-        L"🐋", L"🐟", L"🐠", L"🐡", L"🦐", L"🦑", L"🐙", L"🦞",
-        L"🦀", L"🐚", L"🦆", L"🐓", L"🦃", L"🦅", L"🕊",L"🦢",
-        L"🦜", L"🦩", L"🦚", L"🦉", L"🐦", L"🐧", L"🐥",L"🐤",
-        L"🐣", L"🦇", L"🦋", L"🐛", L"🦟", L"🦗", L"🐜",L"🐝",
-        L"🐞", L"🦂", L"🕷", L"🕸", L"🦠", L"🧞", L"♀",L"♂",
-        L"🗣", L"👤", L"👥", L"👁", L"👀", L"🦴", L"🦷",L"👅",
-        L"👄", L"🧠", L"🦾", L"🦿", L"👣", L"🤺", L"⛷",L"🤼",
-        L"♂", L"🤼", L"♀", L"️", L"👯", L"♂", L"👯", L"♀",L"💑",
-        L"👩" L"❤" L"👩", L"👨", L"❤", L"👨", L"💏",L"👩",
-        L"❤" L"💋", L"👩", L"👨", L"❤",L"💋", L"👨", L"👪",
-        L"👨", L"👩", L"👦"
-    };
-    for(const wchar_t* l : emojis)
-    {
-        QPushButton *button = new QPushButton(QString::fromWCharArray(l));
-        button->setFixedSize(38, 38);
-        button->setFont(QFont("Arial", 14));
-        connect(button, &QPushButton::released, this, [this, button]
-        {
-            QString button_text = button->text();
-            int button_text_length = button_text.length();
-            wchar_t buffer[button_text_length];
-            button_text.toWCharArray(buffer);
-            this->handleButton(buffer, button_text_length);
-        });
-        flowLayout->addWidget(button);
-    }
+    main_layout->addLayout(tab_1->centralLayout);
+    main_layout->addLayout(tab_2->centralLayout);
+    connect(tab_1->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_2->hide(); tab_1->show(); });
+    connect(tab_2->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_1->hide(); tab_2->show(); });
 
-	QWidget *scrollWidget = new QWidget();
-	scrollWidget->setLayout(flowLayout);
-    scrollWidget->setContentsMargins(0, 0, 0, 0);
-	QScrollArea *scrollArea = new QScrollArea();
-	scrollArea->setWidget(scrollWidget);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    scrollArea->verticalScrollBar()->setStyleSheet(" "
-    "QScrollBar:vertical {"
-    "   border: 1px solid #999999;"
-    "   background-color: none;"
-    "   width: 4px;"
-    "   margin: 0px 0px 0px 0px;"
-    "}"
-    "QScrollBar::handle:vertical {"
-    "    background: #858585;"
-    "    min-height: 0px;"
-    "}"
-    "QScrollBar::add-line:vertical {"
-    "    height: 0px;"
-    "    subcontrol-position: bottom;"
-    "    subcontrol-origin: margin;"
-    "}"
-    "QScrollBar::sub-line:vertical {"
-    "    height: 0 px;"
-    "    subcontrol-position: top;"
-    "    subcontrol-origin: margin;"
-    "}");
-
-	QHBoxLayout *centralLayout = new QHBoxLayout();
-	centralLayout->addWidget(scrollArea);
-    centralLayout->setContentsMargins(0, 0, 0, 0);
-
-    main_layout->addLayout(centralLayout);
 	setLayout(main_layout);
 
     setWindowFlags(Qt::Window
@@ -162,7 +81,6 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     | Qt::FramelessWindowHint
     | Qt::WindowDoesNotAcceptFocus);
     setFixedSize(QSize(window_width, window_height));
-    setWindowTitle("Rushia");
     setAttribute(Qt::WA_ShowWithoutActivating);
 }
 
@@ -203,9 +121,4 @@ void EmojiPicker::mousePressEvent(QMouseEvent *event)
 void EmojiPicker::mouseMoveEvent(QMouseEvent *event)
 {
     move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
-}
-
-void EmojiPicker::handleButton(const wchar_t* msg, int size)
-{
-    windowsSendInput(msg, size);
 }
