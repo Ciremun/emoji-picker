@@ -74,8 +74,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
 
     setLayout(main_layout);
 
-    setWindowFlags(Qt::ToolTip
-    | Qt::X11BypassWindowManagerHint
+    setWindowFlags(Qt::Window
     | Qt::WindowStaysOnTopHint
     | Qt::FramelessWindowHint
     | Qt::WindowDoesNotAcceptFocus);
@@ -88,6 +87,7 @@ bool EmojiPicker::nativeEvent(const QByteArray &eventType, void *message, long *
     Q_UNUSED(eventType)
     Q_UNUSED(result)
 
+    #ifdef _WIN32
     MSG* msg = reinterpret_cast<MSG*>(message);
 
     if (msg->message == WM_HOTKEY)
@@ -113,6 +113,7 @@ bool EmojiPicker::nativeEvent(const QByteArray &eventType, void *message, long *
         }
         return true;
     }
+    #endif
     return false;
 }
 

@@ -15,5 +15,4 @@ private:
     QWidget *scrollWidget;
     QScrollArea *scrollArea;
     void setLabelText(QString text);
-    void sendInput(const wchar_t* msg, int size);
 };

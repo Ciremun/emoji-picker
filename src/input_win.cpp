@@ -1,8 +1,9 @@
 #include <iostream>
 
+#include <QtWidgets>
 #include <qt_windows.h>
 
-#include "input.hpp"
+#include "input_win.hpp"
 
 HHOOK hHook;
 
@@ -46,12 +47,12 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
     return CallNextHookEx(hHook, nCode, wParam, lParam);
 }
 
-void setWindowsKeyboardHook()
+void setKeyboardHook()
 {
     hHook = SetWindowsHookEx(WH_KEYBOARD_LL, windowsHookCallback, NULL, 0);
 }
 
-void windowsSendInput(const wchar_t *msg, int size)
+void sendInput(const wchar_t *msg, int size)
 {
     INPUT inputs[size*2];
     INPUT input;
@@ -75,4 +76,16 @@ void windowsSendInput(const wchar_t *msg, int size)
     }
 
     SendInput(size, inputs, sizeof(INPUT));
+}
+
+void registerHotKey(WId wid)
+{
+    HWND hwnd = (HWND)wid;
+    RegisterHotKey(hwnd, 100, MOD_WIN | MOD_NOREPEAT, 0xBF);
+}
+
+void setSpecialWindowState(WId wid)
+{
+    HWND hwnd = (HWND)wid;
+    SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_NOACTIVATE | WS_EX_APPWINDOW);
 }

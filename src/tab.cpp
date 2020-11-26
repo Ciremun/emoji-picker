@@ -2,7 +2,11 @@
 #include <iostream>
 
 #include "flowlayout.hpp"
-#include "input.hpp"
+#ifdef _WIN32
+#include "input_win.hpp"
+#else
+#include "input_X11.hpp"
+#endif
 #include "tab.hpp"
 
 Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
@@ -24,13 +28,13 @@ Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
         button->setFixedSize(button_width, button_height);
         button->setFont(QFont("Arial", font_size));
         button->setStyleSheet("QPushButton{color: #ffffff;}");
-        connect(button, &QPushButton::pressed, this, [this, button]
+        connect(button, &QPushButton::pressed, this, [button]
         {
             QString button_text = button->text();
             int button_text_length = button_text.length();
             wchar_t buffer[button_text_length];
             button_text.toWCharArray(buffer);
-            this->sendInput(buffer, button_text_length);
+            sendInput(buffer, button_text_length);
         });
         flowLayout->addWidget(button);
     }
@@ -78,11 +82,6 @@ Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
 void Tab::setLabelText(QString text)
 {
     label->setText(text);
-}
-
-void Tab::sendInput(const wchar_t* msg, int size)
-{
-    windowsSendInput(msg, size);
 }
 
 void Tab::show()
