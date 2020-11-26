@@ -10,7 +10,6 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     : QFrame(parent), window_width(w), window_height(h)
 {
     setObjectName("MainFrame");
-    setFrameShape(QFrame::Box);
     setStyleSheet(" "
     "#MainFrame {"
     "   border-color: #323338;"
@@ -75,7 +74,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
 
     setLayout(main_layout);
 
-    setWindowFlags(Qt::Window
+    setWindowFlags(Qt::ToolTip
     | Qt::X11BypassWindowManagerHint
     | Qt::WindowStaysOnTopHint
     | Qt::FramelessWindowHint
