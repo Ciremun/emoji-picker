@@ -73,7 +73,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     connect(tab_1->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_2->hide(); tab_1->show(); });
     connect(tab_2->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_1->hide(); tab_2->show(); });
 
-	setLayout(main_layout);
+    setLayout(main_layout);
 
     setWindowFlags(Qt::Window
     | Qt::X11BypassWindowManagerHint

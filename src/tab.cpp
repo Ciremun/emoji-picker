@@ -36,11 +36,11 @@ Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
     }
 
     scrollWidget = new QWidget();
-	scrollWidget->setLayout(flowLayout);
+    scrollWidget->setLayout(flowLayout);
     scrollWidget->setContentsMargins(0, 0, 0, 0);
 
-	scrollArea = new QScrollArea();
-	scrollArea->setWidget(scrollWidget);
+    scrollArea = new QScrollArea();
+    scrollArea->setWidget(scrollWidget);
     scrollArea->setWidgetResizable(true);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->verticalScrollBar()->setStyleSheet(" "
@@ -66,7 +66,7 @@ Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
     "}");
 
     centralLayout = new QHBoxLayout();
-	centralLayout->addWidget(scrollArea);
+    centralLayout->addWidget(scrollArea);
     centralLayout->setContentsMargins(0, 0, 0, 0);
     if (!visible)
     {
