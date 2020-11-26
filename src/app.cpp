@@ -100,9 +100,14 @@ bool EmojiPicker::nativeEvent(const QByteArray &eventType, void *message, long *
             }
             else
             {
-                QPoint point = QCursor::pos();
-                point.setY(point.y() - window_height);
-                move(point);
+                QPoint mouse = QCursor::pos();
+                QSize screen_size = QGuiApplication::screenAt(mouse)->size();
+                QPoint window_corner(mouse.x() + window_width, mouse.y() - window_height);
+                if (window_corner.x() > screen_size.width())
+                    mouse.setX(mouse.x() - window_width);
+                if (window_corner.y() > 0)
+                    mouse.setY(mouse.y() - window_height);
+                move(mouse);
                 show();
             }
         }
