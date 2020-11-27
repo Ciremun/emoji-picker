@@ -3,9 +3,12 @@
 #include <QtWidgets>
 #include <qt_windows.h>
 
+#include "app.hpp"
 #include "input_win.hpp"
+#include "search.hpp"
 
 HHOOK hHook;
+EmojiPicker *instance;
 
 void updateKeyState(BYTE *keystate, int keycode)
 {
@@ -44,11 +47,22 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 
     std::wcout << "Key: " << cKey.vkCode << " " << buffer << " " << lpszName << std::endl;
 
+    if (cKey.vkCode == 8)
+    {
+        searchBarInput(instance, lpszName);
+    }
+    else
+    {
+        char msg[256];
+        wcstombs(msg, buffer, 256);
+        searchBarInput(instance, msg);
+    }
     return CallNextHookEx(hHook, nCode, wParam, lParam);
 }
 
-void setKeyboardHook()
+void setKeyboardHook(EmojiPicker *widget)
 {
+    instance = widget;
     hHook = SetWindowsHookEx(WH_KEYBOARD_LL, windowsHookCallback, NULL, 0);
 }
 

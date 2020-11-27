@@ -2,10 +2,10 @@
 #include <iostream>
 
 #include "flowlayout.hpp"
+#include "app.hpp"
 #ifdef _WIN32
 #include "input_win.hpp"
 #else
-#include "app.hpp"
 #include "input_X11.hpp"
 #endif
 #include "tab.hpp"

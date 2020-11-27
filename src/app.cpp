@@ -43,7 +43,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     main_layout->addWidget(label);
 
     search_bar = new QLineEdit();
-    search_bar->setStyleSheet("QLineEdit{background-color: #111111;}");
+    search_bar->setStyleSheet("QLineEdit{background-color: #111111; color: #ffffff;}");
     search_bar->setContentsMargins(15, 0, 0, 10);
     search_bar->hide();
     main_layout->addWidget(search_bar);

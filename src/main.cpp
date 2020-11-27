@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 #ifdef _WIN32
     AllocConsole();
     freopen("conout$", "w", stdout);
-    WId wid = widget.winId();
+    WId wid = widget->winId();
     registerHotKey(wid);
     setSpecialWindowState(wid);
 #else
