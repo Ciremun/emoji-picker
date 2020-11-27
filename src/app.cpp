@@ -4,11 +4,11 @@
 
 #include "app.hpp"
 #include "emojis.hpp"
-#include "tab.hpp"
 
 EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     : QFrame(parent), window_width(w), window_height(h)
 {
+    setWindowTitle("Rushia - emoji picker");
     setObjectName("MainFrame");
     setStyleSheet(" "
                   "#MainFrame {"
@@ -48,9 +48,9 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     search_bar->hide();
     main_layout->addWidget(search_bar);
 
-    QHBoxLayout *tabs = new QHBoxLayout();
-    tabs->setSpacing(0);
-    tabs->setContentsMargins(8, 0, 0, 0);
+    QHBoxLayout *tabs_layout = new QHBoxLayout();
+    tabs_layout->setSpacing(0);
+    tabs_layout->setContentsMargins(8, 0, 0, 0);
 
     QString tab_button_style = " "
                                "QPushButton {color: #ffffff; background-color: #111111;}"
@@ -61,17 +61,19 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     tab_button_1->setFont(QFont("Arial", 13));
     tab_button_1->setStyleSheet(tab_button_style);
     Tab *tab_1 = new Tab(tab_button_1, label, "Emoji - Keep typing to find an emoji", emojis, 38, 38, 14);
-    tabs->addWidget(tab_button_1);
+    tabs_layout->addWidget(tab_button_1);
 
     QPushButton *tab_button_2 = new QPushButton(";-)");
     tab_button_2->setFixedSize(40, 40);
     tab_button_2->setFont(QFont("Arial", 13));
     tab_button_2->setStyleSheet(tab_button_style);
     Tab *tab_2 = new Tab(tab_button_2, label, "Kaomoji", kaomoji, 100, 40, 11, false);
-    tabs->addWidget(tab_button_2);
+    tabs_layout->addWidget(tab_button_2);
 
-    tabs->addStretch();
-    main_layout->addLayout(tabs);
+    tabs = {tab_1, tab_2};
+
+    tabs_layout->addStretch();
+    main_layout->addLayout(tabs_layout);
 
     main_layout->addLayout(tab_1->centralLayout);
     main_layout->addLayout(tab_2->centralLayout);

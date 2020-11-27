@@ -1,3 +1,5 @@
+#include "tab.hpp"
+
 class EmojiPicker : public QFrame
 {
 public:
@@ -5,6 +7,7 @@ public:
     void toggleOnHotKey();
     QLabel *label;
     QLineEdit *search_bar;
+    std::vector<Tab *> tabs;
 
 private:
     int window_width;

@@ -1,17 +1,15 @@
 #include <QtWidgets>
 #include <iostream>
 
-#include "flowlayout.hpp"
 #include "app.hpp"
 #ifdef _WIN32
 #include "input_win.hpp"
 #else
 #include "input_X11.hpp"
 #endif
-#include "tab.hpp"
 
 Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
-         std::vector<const wchar_t *> &emojis, int button_width,
+         std::vector<std::pair<const char*, const wchar_t *>> &emojis, int button_width,
          int button_height, int font_size, bool visible)
     : tab_button(tab_button), label(label), label_text(label_text), emojis(emojis)
 {
@@ -19,16 +17,19 @@ Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
         this->setLabelText(this->label_text);
     });
 
-    FlowLayout *flowLayout = new FlowLayout(0, 0, 0);
+    flowLayout = new FlowLayout(0, 0, 0);
     flowLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     flowLayout->setContentsMargins(8, 0, 0, 0);
 
-    for (const auto *e : emojis)
+    for (const auto &pair : emojis)
     {
-        QPushButton *button = new QPushButton(QString::fromWCharArray(e));
+        const char* emoji_name = pair.first;
+        const wchar_t * emoji = pair.second;
+        QPushButton *button = new QPushButton(QString::fromWCharArray(emoji));
         button->setFixedSize(button_width, button_height);
         button->setFont(QFont("Arial", font_size));
         button->setStyleSheet("QPushButton{color: #ffffff;}");
+        button->setObjectName(emoji_name);
         connect(button, &QPushButton::pressed, this, [button] {
             QString button_text = button->text();
             int button_text_length = button_text.length();
