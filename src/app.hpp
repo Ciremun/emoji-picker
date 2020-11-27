@@ -3,6 +3,8 @@ class EmojiPicker : public QFrame
 public:
     EmojiPicker(QFrame *parent, int w, int h);
     void toggleOnHotKey();
+    QLabel *label;
+    QLineEdit *search_bar;
 
 private:
     int window_width;

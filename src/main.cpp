@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QFrame window;
     EmojiPicker *widget = new EmojiPicker(&window, 330, 360);
 
-    setKeyboardHook();
+    setKeyboardHook(widget);
 #ifdef _WIN32
     AllocConsole();
     freopen("conout$", "w", stdout);

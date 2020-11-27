@@ -35,12 +35,18 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     main_layout->setSpacing(0);
     main_layout->addWidget(close_button, 0, Qt::AlignRight);
 
-    QLabel *label = new QLabel();
+    label = new QLabel();
     label->setFont(QFont("Arial", 11));
     label->setText("Emoji - Keep typing to find an emoji");
     label->setContentsMargins(15, 0, 0, 10);
     label->setStyleSheet("QLabel{color: #969696; background-color: #111111;}");
     main_layout->addWidget(label);
+
+    search_bar = new QLineEdit();
+    search_bar->setStyleSheet("QLineEdit{background-color: #111111;}");
+    search_bar->setContentsMargins(15, 0, 0, 10);
+    search_bar->hide();
+    main_layout->addWidget(search_bar);
 
     QHBoxLayout *tabs = new QHBoxLayout();
     tabs->setSpacing(0);

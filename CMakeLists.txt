@@ -25,9 +25,10 @@ endforeach()
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 set(sources src/main.cpp src/app.cpp src/app.hpp 
-src/flowlayout.cpp src/flowlayout.hpp
-src/tab.cpp src/tab.hpp
-src/emojis.hpp)
+src/flowlayout.cpp src/flowlayout.hpp 
+src/tab.cpp src/tab.hpp 
+src/emojis.hpp 
+src/search.cpp src/search.hpp)
 
 if(WIN32)
     set(sources ${sources} src/input_win.cpp src/input_win.hpp)

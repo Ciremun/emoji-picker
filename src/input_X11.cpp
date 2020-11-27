@@ -12,8 +12,9 @@
 
 #include "app.hpp"
 #include "input_X11.hpp"
+#include "search.hpp"
 
-void loopInput()
+void loopInput(EmojiPicker *widget)
 {
     Display *display = XOpenDisplay(0);
     Window root = DefaultRootWindow(display);
@@ -40,18 +41,28 @@ void loopInput()
             break;
         case KeyPress:
             char buffer[32];
-            KeySym ignore;
-            Status return_status;
-            Xutf8LookupString(xic, &event.xkey, buffer, 32, &ignore, &return_status);
-            printf("KeyPress: %s\n", buffer);
+            if (event.xkey.keycode == 22)
+            {
+                printf("True");
+                strcpy(buffer, "Backspace\0");
+            }
+            else
+            {
+                KeySym ignore;
+                Status return_status;
+                Xutf8LookupString(xic, &event.xkey, buffer, 32, &ignore, &return_status);
+            }
+            printf("KeyPress: %s -> %u\n", buffer, event.xkey.keycode);
+            searchBarInput(widget, buffer);
+            memset(buffer, 0, 32);
             break;
         }
     }
 }
 
-void setKeyboardHook()
+void setKeyboardHook(EmojiPicker *widget)
 {
-    std::thread *loopInput_t = new std::thread(loopInput);
+    std::thread *loopInput_t = new std::thread(loopInput, widget);
 }
 
 void sendInput(const wchar_t *msg, int size)
@@ -104,7 +115,7 @@ void loopInputHotKey(EmojiPicker *widget)
     Display *dpy = XOpenDisplay(0);
     Window root = DefaultRootWindow(dpy);
     XEvent ev;
-    XGrabKey(dpy, 61, ControlMask, root, 0, GrabModeAsync, GrabModeAsync);
+    XGrabKey(dpy, 61, Mod1Mask, root, 0, GrabModeAsync, GrabModeAsync);
     XSelectInput(dpy, root, KeyPressMask);
     while (true)
     {
