@@ -1,14 +1,12 @@
-#include <QtWidgets>
-
 #include <X11/Xlib.h>
 #include <X11/extensions/XTest.h>
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 
 #include <iostream>
-#include <chrono>
 #include <thread>
 #include <sstream>
+#include <cstring>
 
 #include "input_X11.hpp"
 
@@ -96,12 +94,4 @@ void sendInput(const wchar_t *msg, int size)
 
         XFlush(display);
     }
-}
-
-void registerHotKey(WId wid)
-{
-}
-
-void setSpecialWindowState(WId wid)
-{
 }
