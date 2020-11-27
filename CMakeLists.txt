@@ -39,7 +39,7 @@ endif()
 add_executable(emoji_picker ${sources})
 
 if(NOT WIN32)
-    target_link_libraries(emoji_picker -lX11)
+    target_link_libraries(emoji_picker -lX11 -lXtst)
 endif()
 
 target_link_libraries(emoji_picker Qt5::Widgets)

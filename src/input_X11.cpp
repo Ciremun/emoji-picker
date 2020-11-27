@@ -1,10 +1,15 @@
-#include <iostream>
 #include <QtWidgets>
 
 #include <X11/Xlib.h>
-#include <X11/Xutil.h>
+#include <X11/extensions/XTest.h>
+#include <X11/keysym.h>
+#include <X11/keysymdef.h>
+
+#include <iostream>
 #include <chrono>
 #include <thread>
+#include <sstream>
+
 #include "input_X11.hpp"
 
 void loopInput()
@@ -50,6 +55,47 @@ void setKeyboardHook()
 
 void sendInput(const wchar_t *msg, int size)
 {
+    Display *display = XOpenDisplay(0);
+    KeyCode u = XKeysymToKeycode(display, XStringToKeysym("u"));
+
+    if (size == 2)
+        size -= 1;
+
+    for (int i = 0; i < size; i++)
+    {
+        unsigned int code = msg[i];
+
+        std::stringstream stream;
+        stream << std::hex << code;
+
+        const char *emoji_code = stream.str().c_str();
+        size_t emoji_code_len = strlen(emoji_code);
+
+        int ctrl_key = 37;
+        int shift_key = 50;
+        int return_key = 36;
+
+        XTestFakeKeyEvent(display, ctrl_key, true, 0);
+        XTestFakeKeyEvent(display, shift_key, true, 0);
+        XTestFakeKeyEvent(display, u, true, 0);
+
+        XTestFakeKeyEvent(display, u, false, 0);
+        XTestFakeKeyEvent(display, shift_key, false, 0);
+        XTestFakeKeyEvent(display, ctrl_key, false, 0);
+
+        for (int j = 0; j < emoji_code_len; j++)
+        {
+            char emoji_code_char[2] = {emoji_code[j], '\0'};
+            KeyCode emoji_code = XKeysymToKeycode(display, XStringToKeysym(emoji_code_char));
+            XTestFakeKeyEvent(display, emoji_code, true, 0);
+            XTestFakeKeyEvent(display, emoji_code, false, 0);
+        }
+
+        XTestFakeKeyEvent(display, return_key, true, 0);
+        XTestFakeKeyEvent(display, return_key, false, 0);
+
+        XFlush(display);
+    }
 }
 
 void registerHotKey(WId wid)
