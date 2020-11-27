@@ -2,6 +2,8 @@ class EmojiPicker : public QFrame
 {
 public:
     EmojiPicker(QFrame *parent, int w, int h);
+    void toggleOnHotKey();
+
 private:
     int window_width;
     int window_height;

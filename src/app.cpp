@@ -11,22 +11,22 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
 {
     setObjectName("MainFrame");
     setStyleSheet(" "
-    "#MainFrame {"
-    "   border-color: #323338;"
-    "   border-width: 1.2px;"
-    "   border-style: inset;"
-    "   background-color: #111111;"
-    "}"
-    "QPushButton {border: none;}"
-    "QPushButton:hover {background-color: #474747;}"
-    "* {background: #333333; border:none;}");
+                  "#MainFrame {"
+                  "   border-color: #323338;"
+                  "   border-width: 1.2px;"
+                  "   border-style: inset;"
+                  "   background-color: #111111;"
+                  "}"
+                  "QPushButton {border: none;}"
+                  "QPushButton:hover {background-color: #474747;}"
+                  "* {background: #333333; border:none;}");
 
     QIcon closeIcon = style()->standardIcon(QStyle::SP_TitleBarCloseButton);
     QPushButton *close_button = new QPushButton();
     close_button->setFixedSize(32, 32);
     close_button->setStyleSheet(" "
-    "QPushButton {background-color: #111111;}"
-    "QPushButton:hover {background-color: #cc0c1c;}");
+                                "QPushButton {background-color: #111111;}"
+                                "QPushButton:hover {background-color: #cc0c1c;}");
     close_button->setIcon(closeIcon);
     connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -47,8 +47,8 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     tabs->setContentsMargins(8, 0, 0, 0);
 
     QString tab_button_style = " "
-    "QPushButton {color: #ffffff; background-color: #111111;}"
-    "QPushButton:hover {color: #026fc5; background-color: #282828;}";
+                               "QPushButton {color: #ffffff; background-color: #111111;}"
+                               "QPushButton:hover {color: #026fc5; background-color: #282828;}";
 
     QPushButton *tab_button_1 = new QPushButton(":)");
     tab_button_1->setFixedSize(40, 40);
@@ -74,10 +74,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
 
     setLayout(main_layout);
 
-    setWindowFlags(Qt::Window
-    | Qt::WindowStaysOnTopHint
-    | Qt::FramelessWindowHint
-    | Qt::WindowDoesNotAcceptFocus);
+    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
     setFixedSize(QSize(window_width, window_height));
     setAttribute(Qt::WA_ShowWithoutActivating);
 }
@@ -87,33 +84,16 @@ bool EmojiPicker::nativeEvent(const QByteArray &eventType, void *message, long *
     Q_UNUSED(eventType)
     Q_UNUSED(result)
 
-    #ifdef _WIN32
-    MSG* msg = reinterpret_cast<MSG*>(message);
+#ifdef _WIN32
+    MSG *msg = reinterpret_cast<MSG *>(message);
 
     if (msg->message == WM_HOTKEY)
     {
         if (msg->wParam == 100)
-        {
-            if (isVisible())
-            {
-                hide();
-            }
-            else
-            {
-                QPoint mouse = QCursor::pos();
-                QSize screen_size = QGuiApplication::screenAt(mouse)->size();
-                QPoint window_corner(mouse.x() + window_width, mouse.y() - window_height);
-                if (window_corner.x() > screen_size.width())
-                    mouse.setX(mouse.x() - window_width);
-                if (window_corner.y() > 0)
-                    mouse.setY(mouse.y() - window_height);
-                move(mouse);
-                show();
-            }
-        }
+            toggleOnHotKey();
         return true;
     }
-    #endif
+#endif
     return false;
 }
 
@@ -126,4 +106,24 @@ void EmojiPicker::mousePressEvent(QMouseEvent *event)
 void EmojiPicker::mouseMoveEvent(QMouseEvent *event)
 {
     move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
+}
+
+void EmojiPicker::toggleOnHotKey()
+{
+    if (isVisible())
+    {
+        hide();
+    }
+    else
+    {
+        QPoint mouse = QCursor::pos();
+        QSize screen_size = QGuiApplication::screenAt(mouse)->size();
+        QPoint window_corner(mouse.x() + window_width, mouse.y() - window_height);
+        if (window_corner.x() > screen_size.width())
+            mouse.setX(mouse.x() - window_width);
+        if (window_corner.y() > 0)
+            mouse.setY(mouse.y() - window_height);
+        move(mouse);
+        show();
+    }
 }

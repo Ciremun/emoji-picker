@@ -1,3 +1,5 @@
+#include <QtWidgets>
+
 #include <X11/Xlib.h>
 #include <X11/extensions/XTest.h>
 #include <X11/keysym.h>
@@ -8,6 +10,7 @@
 #include <sstream>
 #include <cstring>
 
+#include "app.hpp"
 #include "input_X11.hpp"
 
 void loopInput()
@@ -21,9 +24,9 @@ void loopInput()
     XSelectInput(display, current_focus_window, KeyPressMask | KeyReleaseMask | FocusChangeMask);
     XIM xim = XOpenIM(display, 0, 0, 0);
     XIC xic = XCreateIC(xim, XNInputStyle, XIMPreeditNothing | XIMStatusNothing, NULL);
+    XEvent event;
     while (true)
     {
-        XEvent event;
         XNextEvent(display, &event);
         switch (event.type)
         {
@@ -48,7 +51,7 @@ void loopInput()
 
 void setKeyboardHook()
 {
-    std::thread *t1 = new std::thread(loopInput);
+    std::thread *loopInput_t = new std::thread(loopInput);
 }
 
 void sendInput(const wchar_t *msg, int size)
@@ -94,4 +97,26 @@ void sendInput(const wchar_t *msg, int size)
 
         XFlush(display);
     }
+}
+
+void loopInputHotKey(EmojiPicker *widget)
+{
+    Display *dpy = XOpenDisplay(0);
+    Window root = DefaultRootWindow(dpy);
+    XEvent ev;
+    XGrabKey(dpy, 61, ControlMask, root, 0, GrabModeAsync, GrabModeAsync);
+    XSelectInput(dpy, root, KeyPressMask);
+    while (true)
+    {
+        XNextEvent(dpy, &ev);
+        if (ev.type == KeyPress)
+        {
+            widget->toggleOnHotKey();
+        }
+    }
+}
+
+void registerHotKey(EmojiPicker *widget)
+{
+    std::thread *loopInputHotKey_t = new std::thread(loopInputHotKey, widget);
 }

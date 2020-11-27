@@ -19,7 +19,7 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
         return CallNextHookEx(hHook, nCode, wParam, lParam);
     }
 
-    KBDLLHOOKSTRUCT cKey = *((KBDLLHOOKSTRUCT*)lParam);
+    KBDLLHOOKSTRUCT cKey = *((KBDLLHOOKSTRUCT *)lParam);
     wchar_t buffer[5];
     BYTE keyboard_state[256];
 
@@ -36,7 +36,7 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
     DWORD dwMsg = 1;
     dwMsg += cKey.scanCode << 16;
     dwMsg += cKey.flags << 24;
-    
+
     int i = GetKeyNameText(dwMsg, (LPTSTR)lpszName, 255);
     int result = ToUnicodeEx(cKey.vkCode, cKey.scanCode, keyboard_state, buffer, 4, 0, keyboard_layout);
 
@@ -54,7 +54,7 @@ void setKeyboardHook()
 
 void sendInput(const wchar_t *msg, int size)
 {
-    INPUT inputs[size*2];
+    INPUT inputs[size * 2];
     INPUT input;
     input.type = INPUT_KEYBOARD;
     input.ki.wVk = 0;
@@ -72,7 +72,7 @@ void sendInput(const wchar_t *msg, int size)
     {
         input.ki.dwFlags = KEYEVENTF_KEYUP;
         input.ki.wScan = msg[i];
-        inputs[i+size] = input;
+        inputs[i + size] = input;
     }
 
     SendInput(size, inputs, sizeof(INPUT));
