@@ -71,6 +71,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     tabs_layout->addWidget(tab_button_2);
 
     tabs = {tab_1, tab_2};
+    tab_buttons = {tab_button_1, tab_button_2};
 
     tabs_layout->addStretch();
     main_layout->addLayout(tabs_layout);

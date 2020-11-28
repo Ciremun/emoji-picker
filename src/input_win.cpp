@@ -47,6 +47,7 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 
     std::wcout << "Key: " << cKey.vkCode << " " << buffer << " " << lpszName << std::endl;
 
+    // enter : cKey.vkCode == 13
     if (cKey.vkCode == 8)
     {
         searchBarInput(instance, lpszName);
@@ -89,7 +90,7 @@ void sendInput(const wchar_t *msg, int size)
         inputs[i + size] = input;
     }
 
-    SendInput(size, inputs, sizeof(INPUT));
+    SendInput(size * 2, inputs, sizeof(INPUT));
 }
 
 void registerHotKey(WId wid)

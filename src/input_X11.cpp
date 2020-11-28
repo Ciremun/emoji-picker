@@ -43,8 +43,7 @@ void loopInput(EmojiPicker *widget)
             char buffer[32];
             if (event.xkey.keycode == 22)
             {
-                printf("True");
-                strcpy(buffer, "Backspace\0");
+                strcpy(buffer, "Backspace");
             }
             else
             {

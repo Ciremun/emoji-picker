@@ -8,6 +8,7 @@ public:
     QLabel *label;
     QLineEdit *search_bar;
     std::vector<Tab *> tabs;
+    std::vector<QPushButton *> tab_buttons;
 
 private:
     int window_width;
