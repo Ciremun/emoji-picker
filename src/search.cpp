@@ -21,28 +21,23 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
 
     if (strcmp(msg, "Backspace") == 0)
     {
-        if (!search_bar->text().isEmpty())
-        {
-            QString search_bar_text = search_bar->text();
-            search_bar_text.chop(1);
-            search_bar->setText(search_bar_text);
-            if (search_bar->text().isEmpty())
-            {
-                search_bar->hide();
-                widget->label->show();
-                for (QPushButton *tab_button : widget->tab_buttons)
-                    tab_button->show();
-                for (const Tab *tab : widget->tabs)
-                {
-                    FlowLayout *flowLayout = tab->flowLayout;
-                    for (int i = 0; i < flowLayout->count(); i++)
-                        flowLayout->itemAt(i)->widget()->show();
-                }
-            }
-        }
-        else
-        {
+        if (search_bar->text().isEmpty())
             return;
+        QString search_bar_text = search_bar->text();
+        search_bar_text.chop(1);
+        search_bar->setText(search_bar_text);
+        if (search_bar->text().isEmpty())
+        {
+            search_bar->hide();
+            widget->label->show();
+            for (QPushButton *tab_button : widget->tab_buttons)
+                tab_button->show();
+            for (const Tab *tab : widget->tabs)
+            {
+                FlowLayout *flowLayout = tab->flowLayout;
+                for (int i = 0; i < flowLayout->count(); i++)
+                    flowLayout->itemAt(i)->widget()->show();
+            }
         }
     }
     else
