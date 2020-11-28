@@ -52,7 +52,7 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
     {
         searchBarInput(instance, lpszName);
     }
-    else
+    else if (isLetter(cKey.vkCode) || cKey.vkCode == 32 || isNumber(cKey.vkCode))
     {
         char msg[256];
         wcstombs(msg, buffer, 256);
@@ -96,11 +96,21 @@ void sendInput(const wchar_t *msg, int size)
 void registerHotKey(WId wid)
 {
     HWND hwnd = (HWND)wid;
-    RegisterHotKey(hwnd, 100, MOD_WIN | MOD_NOREPEAT, 0xBF);
+    RegisterHotKey(hwnd, 100, MOD_ALT | MOD_NOREPEAT, 0xBF);
 }
 
 void setSpecialWindowState(WId wid)
 {
     HWND hwnd = (HWND)wid;
     SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_NOACTIVATE | WS_EX_APPWINDOW);
+}
+
+bool isNumber(int keycode)
+{
+    return (48 <= keycode && keycode <= 57);
+}
+
+bool isLetter(int keycode)
+{
+    return (65 <= keycode && keycode <= 90);
 }

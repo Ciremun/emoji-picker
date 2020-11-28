@@ -57,11 +57,7 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
         }
         search_bar->setText(search_bar->text() + msg);
     }
-    QString emoji_style = "QPushButton {color: #ffffff;} QPushButton:hover {background-color: #474747;}";
-    QString found_emoji_style = "QPushButton {background-color: #2976b2;}";
     std::string search_query = search_bar->text().toStdString();
-
-    bool first_emoji = false;
 
     for (const Tab *tab : widget->tabs)
     {
@@ -70,30 +66,13 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
         {
             QWidget *emoji_button = flowLayout->itemAt(i)->widget();
             if (search_query.length() == 0)
-            {
-                emoji_button->setStyleSheet(emoji_style);
                 continue;
-            }
             std::string emoji_name = emoji_button->objectName().toStdString();
             bool emoji_found = emoji_name.find(search_query) != std::string::npos;
             if (emoji_found)
-            {
-                if (!first_emoji)
-                {
-                    first_emoji = true;
-                    emoji_button->setStyleSheet(found_emoji_style);
-                }
-                else
-                {
-                    emoji_button->setStyleSheet(emoji_style);
-                }
                 emoji_button->show();
-            }
             else
-            {
-                emoji_button->setStyleSheet(emoji_style);
                 emoji_button->hide();
-            }
         }
     }
 }
