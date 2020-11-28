@@ -17,7 +17,7 @@ void updateKeyState(BYTE *keystate, int keycode)
 
 LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    if (wParam == WM_KEYUP)
+    if (wParam == WM_KEYUP || !instance->isVisible())
     {
         return CallNextHookEx(hHook, nCode, wParam, lParam);
     }

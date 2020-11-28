@@ -14,9 +14,6 @@
 // @@@ override Enter keypress?
 void searchBarInput(EmojiPicker *widget, const char *msg)
 {
-    if (!widget->isVisible())
-        return;
-
     QLineEdit *search_bar = widget->search_bar;
 
     if (strcmp(msg, "Backspace") == 0)
@@ -52,6 +49,8 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
         search_bar->setText(search_bar->text() + msg);
     }
     std::string search_query = search_bar->text().toStdString();
+    if (search_query.length() == 0)
+        return;
 
     for (const Tab *tab : widget->tabs)
     {
@@ -59,8 +58,6 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
         for (int i = 0; i < flowLayout->count(); i++)
         {
             QWidget *emoji_button = flowLayout->itemAt(i)->widget();
-            if (search_query.length() == 0)
-                continue;
             std::string emoji_name = emoji_button->objectName().toStdString();
             bool emoji_found = emoji_name.find(search_query) != std::string::npos;
             if (emoji_found)

@@ -43,10 +43,12 @@ void loopInput(EmojiPicker *widget)
             XSelectInput(display, current_focus_window, KeyPressMask | KeyReleaseMask | FocusChangeMask);
             break;
         case KeyPress:
+            if (!widget->isVisible())
+                break;
             if (block_keystrokes.load() > 0)
             {
                 block_keystrokes -= 1;
-                continue;
+                break;
             }
             char buffer[32];
             unsigned int &keycode = event.xkey.keycode;
