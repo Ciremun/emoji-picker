@@ -11,7 +11,6 @@
 #include "input_X11.hpp"
 #endif
 
-// @@@ fix empty keys
 // @@@ override Enter keypress?
 void searchBarInput(EmojiPicker *widget, const char *msg)
 {

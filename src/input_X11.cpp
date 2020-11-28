@@ -9,10 +9,13 @@
 #include <thread>
 #include <sstream>
 #include <cstring>
+#include <atomic>
 
 #include "app.hpp"
 #include "input_X11.hpp"
 #include "search.hpp"
+
+std::atomic<int> typing_emoji{0};
 
 void loopInput(EmojiPicker *widget)
 {
@@ -40,18 +43,29 @@ void loopInput(EmojiPicker *widget)
             XSelectInput(display, current_focus_window, KeyPressMask | KeyReleaseMask | FocusChangeMask);
             break;
         case KeyPress:
+            int block_keystrokes = typing_emoji.load();
+            if (block_keystrokes > 0)
+            {
+                typing_emoji.store(block_keystrokes - 1);
+                continue;
+            }
             char buffer[32];
-            if (event.xkey.keycode == 22)
+            unsigned int &keycode = event.xkey.keycode;
+            if (keycode == 22)
             {
                 strcpy(buffer, "Backspace");
             }
-            else
+            else if (isLetter(keycode) || keycode == 65 || isNumber(keycode))
             {
                 KeySym ignore;
                 Status return_status;
                 Xutf8LookupString(xic, &event.xkey, buffer, 32, &ignore, &return_status);
             }
-            printf("KeyPress: %s -> %u\n", buffer, event.xkey.keycode);
+            else
+            {
+                break;
+            }
+            printf("KeyPress: %s -> %u\n", buffer, keycode);
             searchBarInput(widget, buffer);
             memset(buffer, 0, 32);
             break;
@@ -61,11 +75,12 @@ void loopInput(EmojiPicker *widget)
 
 void setKeyboardHook(EmojiPicker *widget)
 {
-    // std::thread *loopInput_t = new std::thread(loopInput, widget);
+    std::thread *loopInput_t = new std::thread(loopInput, widget);
 }
 
 void sendInput(const wchar_t *msg, int size)
 {
+    int total_chars = 0;
     Display *display = XOpenDisplay(0);
     KeyCode u = XKeysymToKeycode(display, XStringToKeysym("u"));
 
@@ -100,13 +115,17 @@ void sendInput(const wchar_t *msg, int size)
             KeyCode emoji_code = XKeysymToKeycode(display, XStringToKeysym(emoji_code_char));
             XTestFakeKeyEvent(display, emoji_code, true, 0);
             XTestFakeKeyEvent(display, emoji_code, false, 0);
+            total_chars++;
         }
 
         XTestFakeKeyEvent(display, return_key, true, 0);
         XTestFakeKeyEvent(display, return_key, false, 0);
 
+        total_chars += 4;
+
         XFlush(display);
     }
+    typing_emoji.store(total_chars);
 }
 
 void loopInputHotKey(EmojiPicker *widget)
@@ -129,4 +148,14 @@ void loopInputHotKey(EmojiPicker *widget)
 void registerHotKey(EmojiPicker *widget)
 {
     std::thread *loopInputHotKey_t = new std::thread(loopInputHotKey, widget);
+}
+
+bool isLetter(unsigned int keycode)
+{
+    return (24 <= keycode && keycode <= 33) || (38 <= keycode && keycode <= 46) || (52 <= keycode && keycode <= 58);
+}
+
+bool isNumber(unsigned int keycode)
+{
+    return 10 <= keycode && keycode <= 19;
 }
