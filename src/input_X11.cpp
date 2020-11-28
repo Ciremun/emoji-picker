@@ -61,7 +61,7 @@ void loopInput(EmojiPicker *widget)
 
 void setKeyboardHook(EmojiPicker *widget)
 {
-    std::thread *loopInput_t = new std::thread(loopInput, widget);
+    // std::thread *loopInput_t = new std::thread(loopInput, widget);
 }
 
 void sendInput(const wchar_t *msg, int size)

@@ -97,6 +97,7 @@ QSize FlowLayout::sizeHint() const
 QSize FlowLayout::minimumSize() const
 {
     QSize size;
+    // @@@ Linux segfault L102
     for (const QLayoutItem *item : qAsConst(itemList))
         size = size.expandedTo(item->minimumSize());
 

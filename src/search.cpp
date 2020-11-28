@@ -11,7 +11,7 @@
 #include "input_X11.hpp"
 #endif
 
-// /@@@ fix empty keys
+// @@@ fix empty keys
 // @@@ override Enter keypress?
 void searchBarInput(EmojiPicker *widget, const char *msg)
 {
@@ -24,22 +24,21 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
     {
         if (!search_bar->text().isEmpty())
         {
-            if (search_bar->text().length() == 1)
+            QString search_bar_text = search_bar->text();
+            search_bar_text.chop(1);
+            search_bar->setText(search_bar_text);
+            if (search_bar->text().isEmpty())
             {
                 search_bar->hide();
                 widget->label->show();
                 for (QPushButton *tab_button : widget->tab_buttons)
                     tab_button->show();
-            }
-            QString search_bar_text = search_bar->text();
-            search_bar_text.chop(1);
-            search_bar->setText(search_bar_text);
-
-            for (const Tab *tab : widget->tabs)
-            {
-                FlowLayout *flowLayout = tab->flowLayout;
-                for (int i = 0; i < flowLayout->count(); i++)
-                    flowLayout->itemAt(i)->widget()->show();
+                for (const Tab *tab : widget->tabs)
+                {
+                    FlowLayout *flowLayout = tab->flowLayout;
+                    for (int i = 0; i < flowLayout->count(); i++)
+                        flowLayout->itemAt(i)->widget()->show();
+                }
             }
         }
         else
@@ -58,8 +57,7 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
         }
         search_bar->setText(search_bar->text() + msg);
     }
-    QString emoji_style = "QPushButton {color: #ffffff;} "
-                          "QPushButton:hover {background-color: #474747;}";
+    QString emoji_style = "QPushButton {color: #ffffff;} QPushButton:hover {background-color: #474747;}";
     QString found_emoji_style = "QPushButton {background-color: #2976b2;}";
     std::string search_query = search_bar->text().toStdString();
 
