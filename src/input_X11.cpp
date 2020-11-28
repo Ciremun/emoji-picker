@@ -15,7 +15,7 @@
 #include "input_X11.hpp"
 #include "search.hpp"
 
-std::atomic<int> typing_emoji{0};
+std::atomic<int> block_keystrokes{0};
 
 void loopInput(EmojiPicker *widget)
 {
@@ -43,10 +43,9 @@ void loopInput(EmojiPicker *widget)
             XSelectInput(display, current_focus_window, KeyPressMask | KeyReleaseMask | FocusChangeMask);
             break;
         case KeyPress:
-            int block_keystrokes = typing_emoji.load();
-            if (block_keystrokes > 0)
+            if (block_keystrokes.load() > 0)
             {
-                typing_emoji.store(block_keystrokes - 1);
+                block_keystrokes -= 1;
                 continue;
             }
             char buffer[32];
@@ -125,7 +124,7 @@ void sendInput(const wchar_t *msg, int size)
 
         XFlush(display);
     }
-    typing_emoji.store(total_chars);
+    block_keystrokes += total_chars;
 }
 
 void loopInputHotKey(EmojiPicker *widget)
