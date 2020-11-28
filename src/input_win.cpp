@@ -1,7 +1,8 @@
-#include <iostream>
-
 #include <QtWidgets>
 #include <qt_windows.h>
+
+#include <iostream>
+#include <atomic>
 
 #include "app.hpp"
 #include "input_win.hpp"
@@ -9,6 +10,7 @@
 
 HHOOK hHook;
 EmojiPicker *instance;
+std::atomic<int> block_keystrokes{0};
 
 void updateKeyState(BYTE *keystate, int keycode)
 {
@@ -19,6 +21,12 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 {
     if (wParam == WM_KEYUP || !instance->isVisible())
     {
+        return CallNextHookEx(hHook, nCode, wParam, lParam);
+    }
+
+    if (block_keystrokes.load() > 0)
+    {
+        block_keystrokes -= 1;
         return CallNextHookEx(hHook, nCode, wParam, lParam);
     }
 
@@ -90,6 +98,7 @@ void sendInput(const wchar_t *msg, int size)
         inputs[i + size] = input;
     }
 
+    block_keystrokes += size;
     SendInput(size * 2, inputs, sizeof(INPUT));
 }
 
