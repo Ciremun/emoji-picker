@@ -60,14 +60,14 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     tab_button_1->setFixedSize(40, 40);
     tab_button_1->setFont(QFont("Arial", 13));
     tab_button_1->setStyleSheet(tab_button_style);
-    Tab *tab_1 = new Tab(tab_button_1, label, "Emoji - Keep typing to find an emoji", emojis, 38, 38, 14);
+    Tab *tab_1 = new Tab(tab_button_1, label, "Emoji - Keep typing to find an emoji", emojis, true);
     tabs_layout->addWidget(tab_button_1);
 
     QPushButton *tab_button_2 = new QPushButton(";-)");
     tab_button_2->setFixedSize(40, 40);
     tab_button_2->setFont(QFont("Arial", 13));
     tab_button_2->setStyleSheet(tab_button_style);
-    Tab *tab_2 = new Tab(tab_button_2, label, "Kaomoji", kaomoji, 100, 40, 11, false);
+    Tab *tab_2 = new Tab(tab_button_2, label, "Kaomoji", kaomoji);
     tabs_layout->addWidget(tab_button_2);
 
     tabs = {tab_1, tab_2};

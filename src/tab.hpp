@@ -4,8 +4,7 @@ class Tab : QObject
 {
 public:
     Tab(QPushButton *tab_button, QLabel *label, QString label_text,
-        std::vector<std::pair<const char*, const wchar_t *>> &emojis, int button_width,
-        int button_height, int font_size, bool visible = true);
+        std::vector<std::pair<const char*, const wchar_t *>> &emojis, bool visible = false);
     QHBoxLayout *centralLayout;
     QPushButton *tab_button;
     FlowLayout *flowLayout;

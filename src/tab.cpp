@@ -9,8 +9,7 @@
 #endif
 
 Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
-         std::vector<std::pair<const char*, const wchar_t *>> &emojis, int button_width,
-         int button_height, int font_size, bool visible)
+         std::vector<std::pair<const char *, const wchar_t *>> &emojis, bool visible)
     : tab_button(tab_button), label(label), label_text(label_text), emojis(emojis)
 {
     connect(tab_button, &QPushButton::pressed, this, [this] {
@@ -23,11 +22,19 @@ Tab::Tab(QPushButton *tab_button, QLabel *label, QString label_text,
 
     for (const auto &pair : emojis)
     {
-        const char* emoji_name = pair.first;
-        const wchar_t * emoji = pair.second;
+        const char *emoji_name = pair.first;
+        const wchar_t *emoji = pair.second;
         QPushButton *button = new QPushButton(QString::fromWCharArray(emoji));
-        button->setFixedSize(button_width, button_height);
-        button->setFont(QFont("Arial", font_size));
+        if (button->text().length() > 2)
+        {
+            button->setFixedSize(100, 40);
+            button->setFont(QFont("Arial", 11));
+        }
+        else
+        {
+            button->setFixedSize(38, 38);
+            button->setFont(QFont("Arial", 14));
+        }
         button->setStyleSheet("QPushButton{color: #ffffff;}");
         button->setObjectName(emoji_name);
         connect(button, &QPushButton::pressed, this, [button] {
