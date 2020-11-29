@@ -49,18 +49,18 @@ LRESULT CALLBACK windowsHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
     dwMsg += cKey.flags << 24;
 
     int i = GetKeyNameText(dwMsg, (LPTSTR)lpszName, 255);
+    if (cKey.vkCode == 8)
+    {
+        searchBarInput(instance, lpszName);
+        return CallNextHookEx(hHook, nCode, wParam, lParam);
+    }
     int result = ToUnicodeEx(cKey.vkCode, cKey.scanCode, keyboard_state, buffer, 4, 0, keyboard_layout);
 
     buffer[4] = L'\0';
 
     std::wcout << "Key: " << cKey.vkCode << " " << buffer << " " << lpszName << std::endl;
 
-    // enter : cKey.vkCode == 13
-    if (cKey.vkCode == 8)
-    {
-        searchBarInput(instance, lpszName);
-    }
-    else if (isLetter(cKey.vkCode) || cKey.vkCode == 32 || isNumber(cKey.vkCode))
+    if (isLetter(cKey.vkCode) || cKey.vkCode == 32 || isNumber(cKey.vkCode))
     {
         char msg[256];
         wcstombs(msg, buffer, 256);
@@ -102,15 +102,13 @@ void sendInput(const wchar_t *msg, int size)
     SendInput(size * 2, inputs, sizeof(INPUT));
 }
 
-void registerHotKey(WId wid)
+void registerHotKey(HWND hwnd)
 {
-    HWND hwnd = (HWND)wid;
     RegisterHotKey(hwnd, 100, MOD_ALT | MOD_NOREPEAT, 0xBF);
 }
 
-void setSpecialWindowState(WId wid)
+void setSpecialWindowState(HWND hwnd)
 {
-    HWND hwnd = (HWND)wid;
     SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_NOACTIVATE | WS_EX_APPWINDOW);
 }
 
@@ -122,4 +120,11 @@ bool isNumber(int keycode)
 bool isLetter(int keycode)
 {
     return (65 <= keycode && keycode <= 90);
+}
+
+void setOSHooks(EmojiPicker *widget)
+{
+    HWND wid = (HWND)widget->winId();
+    registerHotKey(wid);
+    setSpecialWindowState(wid);
 }

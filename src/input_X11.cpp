@@ -160,3 +160,9 @@ bool isNumber(unsigned int keycode)
 {
     return 10 <= keycode && keycode <= 19;
 }
+
+void setOSHooks(EmojiPicker *widget)
+{
+    registerHotKey(widget);
+    setKeyboardHook(widget);
+}

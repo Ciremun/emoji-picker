@@ -5,3 +5,4 @@ void loopInputHotKey(EmojiPicker *widget);
 void registerHotKey(EmojiPicker *widget);
 bool isLetter(unsigned int keycode);
 bool isNumber(unsigned int keycode);
+void setOSHooks(EmojiPicker *widget);

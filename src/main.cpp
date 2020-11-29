@@ -13,17 +13,11 @@ int main(int argc, char *argv[])
     QApplication Application(argc, argv);
     QFrame window;
     EmojiPicker *widget = new EmojiPicker(&window, 330, 360);
-
-    setKeyboardHook(widget);
 #ifdef _WIN32
     AllocConsole();
     freopen("conout$", "w", stdout);
-    WId wid = widget->winId();
-    registerHotKey(wid);
-    setSpecialWindowState(wid);
-#else
-    registerHotKey(widget);
 #endif
+    setOSHooks(widget);
     widget->show();
     return Application.exec();
 }
