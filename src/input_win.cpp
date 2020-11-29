@@ -127,4 +127,5 @@ void setOSHooks(EmojiPicker *widget)
     HWND wid = (HWND)widget->winId();
     registerHotKey(wid);
     setSpecialWindowState(wid);
+    setKeyboardHook(widget);
 }
