@@ -6,7 +6,7 @@
 #include "emojis.hpp"
 
 EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
-    : QFrame(parent), window_width(w), window_height(h)
+    : QFrame(parent), window_width(w), window_height(h), current_tab(nullptr)
 {
     setWindowTitle("Rushia - emoji picker");
     setObjectName("MainFrame");
@@ -35,18 +35,25 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     main_layout->setSpacing(0);
     main_layout->addWidget(close_button, 0, Qt::AlignRight);
 
+    QFont label_font = QFont("Arial");
+    label_font.setPixelSize(15);
+
     label = new QLabel();
-    label->setFont(QFont("Arial", 11));
+    label->setFont(label_font);
     label->setText("Emoji - Keep typing to find an emoji");
     label->setContentsMargins(15, 0, 0, 10);
     label->setStyleSheet("QLabel{color: #969696; background-color: #111111;}");
     main_layout->addWidget(label);
 
-    search_bar = new QLineEdit();
-    search_bar->setStyleSheet("QLineEdit{background-color: #111111; color: #ffffff;}");
-    search_bar->setContentsMargins(15, 0, 0, 10);
-    search_bar->hide();
-    main_layout->addWidget(search_bar);
+    search_query = new QLabel();
+    search_query->hide();
+
+    emojis_found = new QLabel();
+    emojis_found->setFont(label_font);
+    emojis_found->setContentsMargins(15, 0, 0, 10);
+    emojis_found->setStyleSheet("QLabel{background-color: #111111; color: #ffffff;}");
+    emojis_found->hide();
+    main_layout->addWidget(emojis_found);
 
     QHBoxLayout *tabs_layout = new QHBoxLayout();
     tabs_layout->setSpacing(0);
@@ -70,14 +77,19 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     Tab *tab_2 = new Tab(tab_button_2, label, "Kaomoji", kaomoji);
     tabs_layout->addWidget(tab_button_2);
 
+    search_tab = new SearchTab();
+
     tabs = {tab_1, tab_2};
     tab_buttons = {tab_button_1, tab_button_2};
+    current_tab = tab_1;
 
     tabs_layout->addStretch();
     main_layout->addLayout(tabs_layout);
 
     main_layout->addLayout(tab_1->centralLayout);
     main_layout->addLayout(tab_2->centralLayout);
+    main_layout->addLayout(search_tab->centralLayout);
+
     connect(tab_1->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_2->hide(); tab_1->show(); });
     connect(tab_2->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_1->hide(); tab_2->show(); });
 

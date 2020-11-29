@@ -1,3 +1,5 @@
+#ifndef FLOWLAYOUT_H
+#define FLOWLAYOUT_H
 class FlowLayout : public QLayout
 {
 public:
@@ -26,3 +28,4 @@ private:
     int m_hSpace;
     int m_vSpace;
 };
+#endif

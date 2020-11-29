@@ -28,7 +28,8 @@ set(sources src/main.cpp src/app.cpp src/app.hpp
 src/flowlayout.cpp src/flowlayout.hpp 
 src/tab.cpp src/tab.hpp 
 src/emojis.hpp 
-src/search.cpp src/search.hpp)
+src/search.cpp src/search.hpp
+src/search_tab.cpp src/search_tab.hpp)
 
 if(WIN32)
     set(sources ${sources} src/input_win.cpp src/input_win.hpp)
