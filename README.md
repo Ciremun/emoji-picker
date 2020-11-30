@@ -17,12 +17,13 @@ if `cmake ../` throws `compiler not found` error, try:
     rm CMakeCache.txt
     cmake -G"Unix Makefiles" ../
 
-Qt DLLs required in PATH or application root:  
+DLLs required in PATH or application root:  
 
     platforms/qwindows.dll
     Qt5Core.dll
     Qt5Gui.dll
     Qt5Widgets.dll
+    libstdc++-6.dll
 
 Qt specifically looks for Windows platform plugin (qwindows.dll) inside `platforms` folder  
 
