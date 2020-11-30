@@ -25,3 +25,9 @@ Qt DLLs required in PATH or application root:
     Qt5Widgets.dll
 
 Qt specifically looks for Windows platform plugin (qwindows.dll) inside `platforms` folder  
+
+## HotKey
+
+| Keys | Description |
+| --------| ------------- |
+| Alt + / | Show/Hide window |
