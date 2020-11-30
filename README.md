@@ -1,7 +1,7 @@
 # emoji-picker
 Microsoft Windows Emoji Picker clone  
 
-![pajaDank.jpg](.github/pajaDank.jpg){: style="float:left; padding-right:20px" } ![WAYTOODANK.jpg](.github/WAYTOODANK.jpg)
+![pajaDank.jpg](.github/pajaDank.jpg)&nbsp;&nbsp;&nbsp;&nbsp;![WAYTOODANK.jpg](.github/WAYTOODANK.jpg)
 
 ## Build
 
