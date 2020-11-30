@@ -4,6 +4,7 @@
 
 #include "app.hpp"
 #include "emojis.hpp"
+#include "search.hpp"
 
 EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     : QFrame(parent), window_width(w), window_height(h), current_tab(nullptr)
@@ -90,8 +91,16 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     main_layout->addLayout(tab_2->centralLayout);
     main_layout->addLayout(search_tab->centralLayout);
 
-    connect(tab_1->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_2->hide(); tab_1->show(); });
-    connect(tab_2->tab_button, &QPushButton::pressed, this, [tab_1, tab_2] { tab_1->hide(); tab_2->show(); });
+    connect(tab_1->tab_button, &QPushButton::pressed, this, [this, tab_1, tab_2] {
+        tab_2->hide();
+        tab_1->show();
+        current_tab = tab_1;
+    });
+    connect(tab_2->tab_button, &QPushButton::pressed, this, [this, tab_1, tab_2] {
+        tab_1->hide();
+        tab_2->show();
+        current_tab = tab_2;
+    });
 
     setLayout(main_layout);
 
@@ -147,4 +156,9 @@ void EmojiPicker::toggleOnHotKey()
         move(mouse);
         show();
     }
+}
+
+void EmojiPicker::startSearch(std::string msg)
+{
+    searchBarInput(this, msg.c_str());
 }

@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(emoji_picker VERSION 0.0.1)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+
 if(WIN32)
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
     set(CMAKE_VERBOSE_MAKEFILE TRUE)
-    set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTOUIC ON)
     set(CMAKE_AUTORCC ON)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")

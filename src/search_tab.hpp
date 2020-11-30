@@ -1,3 +1,5 @@
+#ifndef SEARCH_TAB_H
+#define SEARCH_TAB_H
 #include "flowlayout.hpp"
 
 class SearchTab : QObject
@@ -15,3 +17,4 @@ private:
     QWidget *scrollWidget;
     QScrollArea *scrollArea;
 };
+#endif

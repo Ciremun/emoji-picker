@@ -1,3 +1,5 @@
+#ifndef APP_H
+#define APP_H
 #include "tab.hpp"
 #include "search_tab.hpp"
 
@@ -5,7 +7,6 @@ class EmojiPicker : public QFrame
 {
 public:
     EmojiPicker(QFrame *parent, int w, int h);
-    void toggleOnHotKey();
     QLabel *label;
     QLabel *emojis_found;
     QLabel *search_query;
@@ -13,6 +14,10 @@ public:
     std::vector<QPushButton *> tab_buttons;
     Tab *current_tab;
     SearchTab *search_tab;
+
+public slots:
+    void toggleOnHotKey();
+    void startSearch(std::string msg);
 
 private:
     int window_width;
@@ -23,3 +28,4 @@ private:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 };
+#endif

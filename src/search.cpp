@@ -10,7 +10,6 @@
 #include "input_X11.hpp"
 #endif
 
-// @@@ override Enter keypress?
 void searchBarInput(EmojiPicker *widget, const char *msg)
 {
     auto &search_query = widget->search_query;

@@ -11,13 +11,11 @@
 #include <cstring>
 #include <atomic>
 
-#include "app.hpp"
 #include "input_X11.hpp"
-#include "search.hpp"
 
 std::atomic<int> block_keystrokes{0};
 
-void loopInput(EmojiPicker *widget)
+void InputThread::setKeyboardHook()
 {
     Display *display = XOpenDisplay(0);
     Window root = DefaultRootWindow(display);
@@ -67,16 +65,35 @@ void loopInput(EmojiPicker *widget)
                 break;
             }
             printf("KeyPress: %s -> %u\n", buffer, keycode);
-            searchBarInput(widget, buffer);
+            std::string msgs(buffer);
+            emit startSearch(msgs);
             memset(buffer, 0, 32);
             break;
         }
     }
 }
 
-void setKeyboardHook(EmojiPicker *widget)
+void InputThread::registerHotKey()
 {
-    std::thread *loopInput_t = new std::thread(loopInput, widget);
+    Display *dpy = XOpenDisplay(0);
+    Window root = DefaultRootWindow(dpy);
+    XEvent ev;
+    XGrabKey(dpy, 61, Mod1Mask, root, 0, GrabModeAsync, GrabModeAsync);
+    XSelectInput(dpy, root, KeyPressMask);
+    while (true)
+    {
+        XNextEvent(dpy, &ev);
+        if (ev.type == KeyPress)
+        {
+            emit toggleOnHotKey();
+        }
+    }
+}
+
+void InputThread::setOSHooks(EmojiPicker *widget)
+{
+    this->widget = widget;
+    std::thread *registerHotKey_t = new std::thread(&InputThread::registerHotKey, this);
 }
 
 void sendInput(const wchar_t *msg, int size)
@@ -129,28 +146,6 @@ void sendInput(const wchar_t *msg, int size)
     block_keystrokes += total_chars;
 }
 
-void loopInputHotKey(EmojiPicker *widget)
-{
-    Display *dpy = XOpenDisplay(0);
-    Window root = DefaultRootWindow(dpy);
-    XEvent ev;
-    XGrabKey(dpy, 61, Mod1Mask, root, 0, GrabModeAsync, GrabModeAsync);
-    XSelectInput(dpy, root, KeyPressMask);
-    while (true)
-    {
-        XNextEvent(dpy, &ev);
-        if (ev.type == KeyPress)
-        {
-            widget->toggleOnHotKey();
-        }
-    }
-}
-
-void registerHotKey(EmojiPicker *widget)
-{
-    std::thread *loopInputHotKey_t = new std::thread(loopInputHotKey, widget);
-}
-
 bool isLetter(unsigned int keycode)
 {
     return (24 <= keycode && keycode <= 33) || (38 <= keycode && keycode <= 46) || (52 <= keycode && keycode <= 58);
@@ -159,10 +154,4 @@ bool isLetter(unsigned int keycode)
 bool isNumber(unsigned int keycode)
 {
     return 10 <= keycode && keycode <= 19;
-}
-
-void setOSHooks(EmojiPicker *widget)
-{
-    registerHotKey(widget);
-    setKeyboardHook(widget);
 }

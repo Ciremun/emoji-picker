@@ -1,3 +1,5 @@
+#ifndef TAB_H
+#define TAB_H
 #include "flowlayout.hpp"
 
 class Tab : QObject
@@ -19,3 +21,4 @@ private:
     QScrollArea *scrollArea;
     void setLabelText(QString text);
 };
+#endif
