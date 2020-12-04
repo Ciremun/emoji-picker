@@ -13,12 +13,12 @@ int main(int argc, char *argv[])
     QApplication Application(argc, argv);
     QFrame window;
     EmojiPicker *widget = new EmojiPicker(&window, 330, 360);
-    qRegisterMetaType<std::string>("std::string");
 #ifdef _WIN32
     AllocConsole();
     freopen("conout$", "w", stdout);
     setOSHooks(widget);
 #else
+    qRegisterMetaType<std::string>("std::string");
     QThread keyboard_hook_thread;
     InputThread input_thread;
     QObject::connect(&input_thread, &InputThread::toggleOnHotKey, widget, &EmojiPicker::toggleOnHotKey);

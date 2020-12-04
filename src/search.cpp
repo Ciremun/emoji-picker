@@ -72,7 +72,7 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
         }
     }
     widget->search_tab->update(found_emojis);
-    int found_emojis_count =  found_emojis.size();
+    int found_emojis_count = found_emojis.size();
     std::string emojis_found_text_p1 = std::to_string(found_emojis_count);
     std::string emojis_found_text_p2;
     if (found_emojis_count == 1)

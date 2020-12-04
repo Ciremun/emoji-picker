@@ -1,1 +1,1 @@
-void searchBarInput(EmojiPicker *widget, const char* msg);
+void searchBarInput(EmojiPicker *widget, const char *msg);

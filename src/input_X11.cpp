@@ -98,8 +98,19 @@ void InputThread::setOSHooks(EmojiPicker *widget)
 
 void sendInput(const wchar_t *msg, int size)
 {
-    int total_chars = 0;
     Display *display = XOpenDisplay(0);
+
+    std::wcout << L"msg: " << msg << std::endl;
+
+    if (wcscmp(msg, L"Backspace") == 0)
+    {
+        XTestFakeKeyEvent(display, 22, true, 0);
+        XTestFakeKeyEvent(display, 22, false, 0);
+        XFlush(display);
+        return;
+    }
+
+    int total_chars = 0;
     KeyCode u = XKeysymToKeycode(display, XStringToKeysym("u"));
 
     if (size == 2)

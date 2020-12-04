@@ -8,7 +8,8 @@
 #include "input_X11.hpp"
 #endif
 
-SearchTab::SearchTab()
+SearchTab::SearchTab(QLabel *sq)
+    : search_query(sq)
 {
     flowLayout = new FlowLayout(0, 0, 0);
     flowLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -78,11 +79,15 @@ void SearchTab::update(std::vector<std::wstring> &emojis)
             button->setFont(QFont("Arial", 14));
         }
         button->setStyleSheet("QPushButton{color: #ffffff;}");
-        connect(button, &QPushButton::pressed, this, [button] {
+        connect(button, &QPushButton::pressed, this, [this, button] {
             QString button_text = button->text();
             int button_text_length = button_text.length();
             wchar_t buffer[button_text_length];
             button_text.toWCharArray(buffer);
+            int search_query_length = search_query->text().length();
+            printf("query len: %u\n", search_query_length);
+            for (int i = 0; i < search_query_length; i++)
+                sendInput(L"Backspace", 10);
             sendInput(buffer, button_text_length);
         });
         flowLayout->addWidget(button);

@@ -5,9 +5,10 @@
 class SearchTab : QObject
 {
 public:
-    SearchTab();
+    SearchTab(QLabel *search_query);
     QHBoxLayout *centralLayout;
     FlowLayout *flowLayout;
+    QLabel *search_query;
     void hide();
     void show();
     void update(std::vector<std::wstring> &emojis);

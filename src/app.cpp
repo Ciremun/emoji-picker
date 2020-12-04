@@ -78,7 +78,7 @@ EmojiPicker::EmojiPicker(QFrame *parent, int w, int h)
     Tab *tab_2 = new Tab(tab_button_2, label, "Kaomoji", kaomoji);
     tabs_layout->addWidget(tab_button_2);
 
-    search_tab = new SearchTab();
+    search_tab = new SearchTab(search_query);
 
     tabs = {tab_1, tab_2};
     tab_buttons = {tab_button_1, tab_button_2};
