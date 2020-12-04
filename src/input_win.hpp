@@ -7,3 +7,4 @@ void setSpecialWindowState(HWND hwnd);
 bool isLetter(int keycode);
 bool isNumber(int keycode);
 void setOSHooks(EmojiPicker *widget);
+void sendBackspace();

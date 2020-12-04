@@ -36,6 +36,8 @@ void searchBarInput(EmojiPicker *widget, const char *msg)
     {
         if (search_query->text().isEmpty())
         {
+            if (strcmp(msg, " ") == 0)
+                return;
             widget->label->hide();
             emojis_found->setText("0 emojis are found");
             emojis_found->show();

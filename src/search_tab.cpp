@@ -85,9 +85,8 @@ void SearchTab::update(std::vector<std::wstring> &emojis)
             wchar_t buffer[button_text_length];
             button_text.toWCharArray(buffer);
             int search_query_length = search_query->text().length();
-            printf("query len: %u\n", search_query_length);
             for (int i = 0; i < search_query_length; i++)
-                sendInput(L"Backspace", 10);
+                sendBackspace();
             sendInput(buffer, button_text_length);
         });
         flowLayout->addWidget(button);

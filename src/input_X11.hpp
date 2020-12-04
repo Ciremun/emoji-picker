@@ -21,3 +21,4 @@ signals:
 void sendInput(const wchar_t *msg, int size);
 bool isLetter(unsigned int keycode);
 bool isNumber(unsigned int keycode);
+void sendBackspace();

@@ -102,6 +102,25 @@ void sendInput(const wchar_t *msg, int size)
     SendInput(size * 2, inputs, sizeof(INPUT));
 }
 
+void sendBackspace()
+{
+    INPUT inputs[2];
+    INPUT input;
+    input.type = INPUT_KEYBOARD;
+    input.ki.wVk = VK_BACK;
+    input.ki.wScan = 0;
+    input.ki.time = 0;
+    input.ki.dwExtraInfo = 0;
+    input.ki.dwFlags = 0;
+
+    inputs[0] = input;
+    input.ki.dwFlags = KEYEVENTF_KEYUP;
+    inputs[1] = input;
+
+    SendInput(2, inputs, sizeof(INPUT));
+    searchBarInput(instance, "Backspace");
+}
+
 void registerHotKey(HWND hwnd)
 {
     RegisterHotKey(hwnd, 100, MOD_ALT | MOD_NOREPEAT, 0xBF);
